@@ -1,0 +1,26 @@
+name: exam-3-env
+channels:
+  - conda-forge
+dependencies:
+  # --- core ---
+  - python=3.9
+  - numpy<2.0            # pin for CatBoost compatibility
+  - pandas>=2.0
+  - scikit-learn=1.4.2
+  - xgboost=2.0.3
+  - lightgbm
+  - catboost=1.2.8       # last stable; built against NumPy 1.x
+  # --- viz / utils ---
+  - matplotlib>=3.7
+  - seaborn>=0.12
+  # --- networking ---
+  - requests             # pulls in urllib3, certifi, idna
+  - charset-normalizer   # suppresses RequestsDependencyWarning
+  # --- stats / misc ---
+  - statsmodels>=0.13
+  - yellowbrick>=1.5
+  - pyarrow>=10
+  - jupyter
+  - pip
+  - pip:
+      - tushare           # still needs your API key
