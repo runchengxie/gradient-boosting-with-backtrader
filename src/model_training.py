@@ -151,7 +151,7 @@ class ModelTrainer:
             
             print(f"{model_name} 测试集 AUC: {roc_auc:.4f}")
           # 绘制ROC曲线
-        self._plot_roc_curves(all_roc_data)
+        self.plot_roc_curves(evaluation_results)
         
         return evaluation_results
     
