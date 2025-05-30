@@ -144,7 +144,9 @@ class ModelTrainer:
                 'confusion_matrix': cm,
                 'classification_report': report,
                 'predictions': y_pred,
-                'prediction_probabilities': y_pred_proba
+                'prediction_probabilities': y_pred_proba,
+                'fpr': fpr,
+                'tpr': tpr
             }
             
             all_roc_data[model_name] = {'fpr': fpr, 'tpr': tpr, 'auc': roc_auc}
