@@ -1,4 +1,4 @@
-name: exam-3-env
+name: gradient-boosting
 channels:
   - conda-forge
 dependencies:
@@ -21,6 +21,6 @@ dependencies:
   - yellowbrick>=1.5
   - pyarrow>=10
   - jupyter
-  - pip
   - pip:
       - tushare           # still needs your API key
+      - backtrader        # for advanced backtesting

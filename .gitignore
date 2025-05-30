@@ -1,0 +1,12 @@
+# CatBoost specific files
+catboost_info/
+
+# Python specific files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Other common ignores (optional, but good practice)
+.env
+*.log

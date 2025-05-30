@@ -1,0 +1,102 @@
+{
+  "config": {
+    "ticker": "000300.SH",
+    "start_date": "2004-12-31",
+    "end_date": "2025-05-20",
+    "test_size": 0.2,
+    "positive_move_threshold": 0.2
+  },
+  "data_info": {
+    "raw_data_shape": [
+      4947,
+      32
+    ],
+    "final_data_shape": [
+      3908,
+      3
+    ],
+    "target_distribution": {
+      "0": 2742,
+      "1": 2144
+    }
+  },
+  "model_performance": {
+    "GradientBoosting": {
+      "auc": 0.4991023699215966,
+      "precision": 0.4247787610619469,
+      "recall": 0.13043478260869565,
+      "f1_score": 0.1995841995841996
+    },
+    "XGBoost": {
+      "auc": 0.49706209907341414,
+      "precision": 0.3891625615763547,
+      "recall": 0.21467391304347827,
+      "f1_score": 0.276707530647986
+    },
+    "LightGBM": {
+      "auc": 0.5119787954383463,
+      "precision": 0.4351145038167939,
+      "recall": 0.15489130434782608,
+      "f1_score": 0.22845691382765532
+    },
+    "CatBoost": {
+      "auc": 0.5303746436208125,
+      "precision": 0.3972602739726027,
+      "recall": 0.07880434782608696,
+      "f1_score": 0.13151927437641722
+    }
+  },
+  "best_model": "CatBoost",
+  "backtest_results": {
+    "买入持有": {
+      "total_return": -21.624903997199986,
+      "final_value": 78375.09600280001,
+      "sharpe_ratio": -0.478544932777597,
+      "max_drawdown": 37.50718136310287,
+      "total_trades": 1,
+      "winning_trades": 0,
+      "losing_trades": 0,
+      "win_rate": 0.0
+    },
+    "GradientBoosting": {
+      "total_return": -46.11168191429999,
+      "final_value": 53888.318085700004,
+      "sharpe_ratio": -1.3806358695380359,
+      "max_drawdown": 48.76388481663859,
+      "total_trades": 13,
+      "winning_trades": 0,
+      "losing_trades": 12,
+      "win_rate": 0.0
+    },
+    "XGBoost": {
+      "total_return": -45.41231003709997,
+      "final_value": 54587.68996290003,
+      "sharpe_ratio": -2.187843684108151,
+      "max_drawdown": 48.53118623736874,
+      "total_trades": 21,
+      "winning_trades": 3,
+      "losing_trades": 17,
+      "win_rate": 14.285714285714285
+    },
+    "LightGBM": {
+      "total_return": -42.88641958529997,
+      "final_value": 57113.58041470003,
+      "sharpe_ratio": -3.182757400209301,
+      "max_drawdown": 44.86252465287127,
+      "total_trades": 17,
+      "winning_trades": 2,
+      "losing_trades": 14,
+      "win_rate": 11.76470588235294
+    },
+    "CatBoost": {
+      "total_return": -26.478738955199947,
+      "final_value": 73521.26104480005,
+      "sharpe_ratio": -3.27285220194072,
+      "max_drawdown": 26.47873895519995,
+      "total_trades": 6,
+      "winning_trades": 0,
+      "losing_trades": 6,
+      "win_rate": 0.0
+    }
+  }
+}

@@ -1,171 +1,160 @@
-# 基于梯度提升算法的股票价格预测与交易策略回测
+# 梯度提升股票预测项目 - 模块化版本
 
-一个使用梯度提升机器学习算法预测股票价格并进行交易策略回测的完整项目。该项目基于中证300指数(CSI 300, 000300.SH)数据，通过技术指标分析和特征工程来预测股票的短期走势。
+## 项目概述
 
-## 📈 项目概述
+本项目使用梯度提升算法预测股票价格走势，采用模块化设计，将原本的单一文件重构为多个专门的模块。
 
-本项目实现了一个完整的机器学习交易系统，包含以下核心功能：
+## 项目结构
 
-- **数据获取**: 使用Tushare API获取中证300指数的历史数据和技术指标
-- **特征工程**: 创建交互特征、数学变换和聚类特征
-- **模型训练**: 使用多种梯度提升算法(XGBoost, LightGBM, CatBoost)
-- **特征选择**: 采用漏斗式特征选择方法(VIF、统计测试、RFE)
-- **策略回测**: 基于模型预测结果进行交易策略回测
-
-## 🏗️ 项目架构
-
-项目采用7步模型构建流程：
-
-1. **问题理解** - 定义预测目标和评估指标
-2. **数据收集和准备** - 获取股票数据和技术指标
-3. **数据探索和可视化** - 分析数据分布和相关性
-4. **数据清洗** - 处理缺失值和异常值
-5. **数据变换和特征工程** - 创建预测特征
-6. **模型训练和评估** - 训练多个机器学习模型
-7. **交易策略回测** - 验证模型在实际交易中的表现
-
-## 🚀 快速开始
-
-### 环境要求
-
-- Python 3.9+
-- Conda或Miniconda
-
-### 安装依赖
-
-1. 克隆项目到本地：
-```bash
-git clone https://github.com/yourusername/gradient-boosting-with-backtrader.git
-cd gradient-boosting-with-backtrader
+```
+gradient-boosting-with-backtrader/
+│
+├── main.py                    # 模块化主程序
+├── main_old_backup.py        # 原始单文件版本备份（1154行）
+├── environment.yml           # Conda环境配置
+├── README.md                # 项目说明
+├── results_summary.json     # 结果保存文件
+│
+├── src/                     # 源代码模块
+│   ├── __init__.py         # 包初始化
+│   ├── config.py           # 配置文件
+│   ├── data_processing.py  # 数据处理模块
+│   ├── feature_engineering.py  # 特征工程模块
+│   ├── model_training.py   # 模型训练模块
+│   ├── backtesting.py      # 回测模块
+│   ├── visualization.py    # 可视化模块
+│   └── utils.py            # 工具函数模块
+│
+├── downloaded_raw_data/     # 缓存数据目录
+│   ├── *.parquet           # 缓存的数据文件
+│   └── *.csv
+│
+└── catboost_info/          # CatBoost训练信息
+    └── ...
 ```
 
-2. 创建并激活Conda环境：
+## 模块说明
+
+### 1. config.py - 配置管理
+- 包含所有项目配置和常量
+- 数据源配置、模型参数、可视化设置等
+- 便于统一管理和修改参数
+
+### 2. data_processing.py - 数据处理
+- `DataCollector`: 数据获取类，支持缓存机制
+- `DataProcessor`: 数据清洗、转换、特征创建
+- 包含数据验证和完整性检查
+
+### 3. feature_engineering.py - 特征工程
+- `FeatureEngineer`: 特征工程类
+- 聚类特征、特征选择、多重共线性检查
+- 完整的特征选择流水线
+
+### 4. model_training.py - 模型训练
+- `ModelTrainer`: 模型训练类
+- `ModelEvaluator`: 模型评估类
+- 支持多种梯度提升算法（XGBoost、LightGBM、CatBoost等）
+
+### 5. backtesting.py - 回测引擎
+- `BacktestEngine`: 回测引擎类
+- 支持多策略比较
+- 性能指标计算和可视化
+
+### 6. visualization.py - 可视化
+- `DataVisualizer`: 数据可视化类
+- 数据探索、模型结果、回测结果可视化
+- 支持中文显示
+
+### 7. utils.py - 工具函数
+- 通用工具函数
+- 数据质量检查、统计计算、文件操作等
+
+## 优势对比
+
+### 原始版本问题
+- **单文件过大**: 1154行代码全部在一个文件中
+- **缺乏模块化**: 功能混杂，难以维护
+- **代码重复**: 缺乏抽象和复用
+- **测试困难**: 无法进行单元测试
+- **协作困难**: 团队开发容易冲突
+
+### 模块化版本优势
+- **代码组织清晰**: 按功能模块分离
+- **易于维护**: 每个模块职责单一
+- **可复用性强**: 模块可以独立使用
+- **易于测试**: 支持单元测试
+- **扩展性好**: 容易添加新功能
+- **团队友好**: 不同成员可以负责不同模块
+
+## 使用方法
+
+### 1. 安装依赖
 ```bash
 conda env create -f environment.yml
-conda activate exam-3-env
+conda activate gradient-boosting
 ```
 
-### 配置API密钥
-
-在运行代码之前，需要设置Tushare API密钥：
-
+### 2. 设置API密钥
 ```bash
-# Windows PowerShell
-$env:TUSHARE_API_KEY="your_tushare_api_key_here"
-
-# Linux/Mac
-export TUSHARE_API_KEY="your_tushare_api_key_here"
+export TUSHARE_API_KEY="your_api_key_here"
 ```
 
-> 💡 **获取Tushare API密钥**: 访问 [Tushare官网](https://tushare.pro/) 注册账户并获取免费API密钥
-
-### 运行项目
-
+### 3. 运行主程序
 ```bash
 python main.py
 ```
 
-## 📊 核心功能
+### 4. 单独使用某个模块
+```python
+from src.data_processing import DataCollector
+from src.visualization import DataVisualizer
 
-### 数据处理
-- **数据源**: 中证300指数(000300.SH)历史数据
-- **时间范围**: 2004年12月31日 - 2025年5月20日
-- **技术指标**: 包含30+个技术指标(MA, RSI, MACD, Bollinger Bands等)
-- **数据缓存**: 自动缓存下载的数据，避免重复API调用
+# 数据收集
+collector = DataCollector()
+data = collector.fetch_data('000300.SH', '2020-01-01', '2023-12-31')
 
-### 特征工程
-- **数学变换**: 对成交量和成交额进行对数变换
-- **交互特征**: 创建趋势与动量、波动率的交互特征
-- **聚类特征**: 使用K-Means聚类添加市场状态特征
-- **特征选择**: VIF过滤 → 统计测试 → 递归特征消除
-
-### 机器学习模型
-- **XGBoost**: 极端梯度提升算法
-- **LightGBM**: 轻量级梯度提升算法
-- **CatBoost**: 处理类别特征的梯度提升算法
-- **网格搜索**: 自动调优模型超参数
-
-### 回测系统
-- **预测信号**: 基于模型输出生成买卖信号
-- **策略对比**: 主动交易策略 vs 买入持有策略
-- **性能指标**: 总收益率、夏普比率、最大回撤等
-
-## 📁 项目结构
-
-```
-gradient-boosting-with-backtrader/
-├── code_only.py              # 主程序文件
-├── environment.yml           # Conda环境配置
-├── README.md                 # 项目说明文档
-├── downloaded_raw_data/      # 数据缓存目录
-│   ├── 000300.SH_20041231_20250520.csv
-│   └── 000300.SH_20041231_20250520.parquet
-└── catboost_info/           # CatBoost训练日志
-    ├── catboost_training.json
-    ├── learn_error.tsv
-    ├── time_left.tsv
-    └── learn/
+# 数据可视化
+visualizer = DataVisualizer()
+visualizer.plot_time_series(data)
 ```
 
-## 🔧 配置参数
+## 配置说明
 
-主要配置参数在代码顶部可以调整：
+主要配置项在 `src/config.py` 中：
 
 ```python
-TICKER = '000300.SH'              # 股票代码
-START_DATE = '2004-12-31'         # 开始日期
-END_DATE = '2025-05-20'           # 结束日期
-TEST_SIZE = 0.2                   # 测试集比例
-POSITIVE_MOVE_THRESHOLD = 0.2     # 正向移动阈值(%)
-RANDOM_STATE = 42                 # 随机种子
+# 数据配置
+TICKER = '000300.SH'  # 股票代码
+START_DATE = '2004-12-31'  # 开始日期
+END_DATE = '2025-05-20'    # 结束日期
+
+# 模型配置
+TEST_SIZE = 0.2  # 测试集比例
+POSITIVE_MOVE_THRESHOLD = 0.2  # 正向移动阈值
+
+# 回测配置
+INITIAL_CAPITAL = 100000  # 初始资金
 ```
 
-## 📈 性能指标
+## 扩展建议
 
-项目会输出以下性能指标：
+1. **添加更多数据源**: 在 `DataCollector` 中添加其他数据源
+2. **新增模型算法**: 在 `ModelTrainer` 中添加新的机器学习算法
+3. **优化特征工程**: 在 `FeatureEngineer` 中添加更多特征创建方法
+4. **完善回测策略**: 在 `BacktestEngine` 中添加更复杂的交易策略
+5. **添加风险管理**: 加入止损、仓位管理等功能
 
-- **分类指标**: 准确率、精确率、召回率、F1-score、AUC-ROC
-- **回测指标**: 
-  - 总收益率
-  - 夏普比率
-  - 最大回撤
-  - 胜率
-  - 年化收益率
+## 注意事项
 
-## 🎯 模型预测目标
+1. 确保已设置正确的Tushare API密钥
+2. 首次运行会下载数据并缓存
+3. 可以通过修改 `config.py` 来调整参数
+4. 建议先在小数据集上测试
 
-模型预测下一个交易日的价格变动：
-- **标签1**: 下一日涨幅 > 0.2%
-- **标签0**: 下一日涨幅 ≤ 0.2%
+## 贡献指南
 
-这是一个二分类问题，专注于识别短期上涨机会。
-
-## 📚 技术栈
-
-- **数据处理**: Pandas, NumPy
-- **机器学习**: Scikit-learn, XGBoost, LightGBM, CatBoost
-- **数据可视化**: Matplotlib, Seaborn, Yellowbrick
-- **统计分析**: Statsmodels
-- **数据源**: Tushare
-
-## 🤝 贡献指南
-
-欢迎提交Issue和Pull Request来改进项目：
-
-1. Fork项目
-2. 创建特性分支 (`git checkout -b feature/AmazingFeature`)
-3. 提交更改 (`git commit -m 'Add some AmazingFeature'`)
-4. 推送到分支 (`git push origin feature/AmazingFeature`)
-5. 打开Pull Request
-
-## 📝 许可证
-
-本项目采用MIT许可证 - 查看[LICENSE](LICENSE)文件了解详情。
-
-## ⚠️ 免责声明
-
-本项目仅用于教育和研究目的。任何基于此代码的投资决策风险自负。历史表现不代表未来结果。请在实际投资前咨询专业的财务顾问。
-
----
-
-**开始你的量化投资之旅！** 🚀
+1. 每个模块都有明确的职责边界
+2. 新功能应该添加到对应的模块中
+3. 保持代码风格一致
+4. 添加适当的文档和注释
+5. 考虑向后兼容性
