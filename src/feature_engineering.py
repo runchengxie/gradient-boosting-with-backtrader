@@ -157,29 +157,77 @@ class FeatureEngineer:
             print(f"VIF分析失败: {e}")
             return []
     
+    def _progressive_vif_removal(self, X: pd.DataFrame, features: List[str], threshold: float = 15.0) -> List[str]:
+        """渐进式移除高VIF特征"""
+        try:
+            remaining_features = features.copy()
+            X_current = X[remaining_features]
+            
+            while True:
+                # 只对数值型特征计算VIF
+                numeric_features = X_current.select_dtypes(include=[np.number]).columns
+                X_numeric = X_current[numeric_features]
+                
+                if X_numeric.shape[1] < 2:
+                    break
+                
+                # 计算当前特征的VIF
+                vif_data = pd.DataFrame()
+                vif_data["Feature"] = X_numeric.columns
+                vif_data["VIF"] = [
+                    variance_inflation_factor(X_numeric.values, i) 
+                    for i in range(X_numeric.shape[1])
+                ]
+                
+                # 找出VIF最高的特征
+                max_vif_row = vif_data.loc[vif_data["VIF"].idxmax()]
+                max_vif_feature = max_vif_row["Feature"]
+                max_vif_value = max_vif_row["VIF"]
+                
+                # 如果最高VIF低于阈值，停止移除
+                if max_vif_value <= threshold:
+                    break
+                
+                # 移除VIF最高的特征
+                remaining_features.remove(max_vif_feature)
+                X_current = X_current.drop(columns=[max_vif_feature])
+                print(f"移除高VIF特征: {max_vif_feature} (VIF: {max_vif_value:.2f})")
+                
+                # 如果特征数量过少，停止移除
+                if len(remaining_features) <= 5:
+                    print(f"特征数量已降至 {len(remaining_features)}，停止移除")
+                    break
+            
+            print(f"VIF移除完成，保留 {len(remaining_features)} 个特征")
+            return remaining_features
+            
+        except Exception as e:
+            print(f"渐进式VIF移除失败: {e}")
+            return features
+    
     def apply_feature_selection_pipeline(self, X_train: pd.DataFrame, y_train: pd.Series,
                                        X_test: pd.DataFrame) -> Tuple[pd.DataFrame, pd.DataFrame]:
         """应用完整的特征选择流水线"""
         print("\n=== 开始特征选择流水线 ===")
         
-        # 1. 单变量特征选择
+        # 1. 单变量特征选择 - 增加保留特征数量
         print("\n1. 单变量特征选择")
-        univariate_features = self.select_features_univariate(X_train, y_train, k=20)
+        univariate_features = self.select_features_univariate(X_train, y_train, k=25)
         X_train_uni = X_train[univariate_features]
         X_test_uni = X_test[univariate_features]
         
-        # 2. RFE特征选择
+        # 2. RFE特征选择 - 增加保留特征数量
         print("\n2. 递归特征消除")
-        rfe_features = self.select_features_rfe(X_train_uni, y_train, n_features=15)
+        rfe_features = self.select_features_rfe(X_train_uni, y_train, n_features=20)
         X_train_rfe = X_train_uni[rfe_features]
         X_test_rfe = X_test_uni[rfe_features]
         
-        # 3. 多重共线性检查
+        # 3. 多重共线性检查 - 放宽VIF阈值
         print("\n3. 多重共线性检查")
-        high_vif_features = self.check_multicollinearity(X_train_rfe, threshold=10.0)
+        high_vif_features = self.check_multicollinearity(X_train_rfe, threshold=15.0)
         
-        # 移除高VIF特征
-        final_features = [f for f in rfe_features if f not in high_vif_features]
+        # 渐进式移除高VIF特征，而不是一次性全部移除
+        final_features = self._progressive_vif_removal(X_train_rfe, rfe_features, threshold=15.0)
         X_train_final = X_train_rfe[final_features]
         X_test_final = X_test_rfe[final_features]
         
@@ -187,5 +235,13 @@ class FeatureEngineer:
         print(f"原始特征数: {X_train.shape[1]}")
         print(f"最终特征数: {len(final_features)}")
         print(f"最终特征: {final_features}")
+        
+        # 打印最终特征的统计信息
+        print(f"\n=== 最终特征集 统计信息 ===")
+        print(f"特征数量: {len(final_features)}")
+        print(f"样本数量: {X_train_final.shape[0]}")
+        print("特征列表:")
+        for i, feature in enumerate(final_features, 1):
+            print(f"   {i}. {feature}")
         
         return X_train_final, X_test_final

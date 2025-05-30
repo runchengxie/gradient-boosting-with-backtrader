@@ -13,7 +13,7 @@
     ],
     "final_data_shape": [
       3908,
-      3
+      10
     ],
     "target_distribution": {
       "0": 2742,
@@ -22,31 +22,31 @@
   },
   "model_performance": {
     "GradientBoosting": {
-      "auc": 0.4991023699215966,
-      "precision": 0.4247787610619469,
-      "recall": 0.13043478260869565,
-      "f1_score": 0.1995841995841996
+      "auc": 0.5594975053456879,
+      "precision": 0.4785714285714286,
+      "recall": 0.18206521739130435,
+      "f1_score": 0.2637795275590551
     },
     "XGBoost": {
-      "auc": 0.49706209907341414,
-      "precision": 0.3891625615763547,
-      "recall": 0.21467391304347827,
-      "f1_score": 0.276707530647986
+      "auc": 0.5500423200285103,
+      "precision": 0.48201438848920863,
+      "recall": 0.18206521739130435,
+      "f1_score": 0.26429980276134124
     },
     "LightGBM": {
-      "auc": 0.5119787954383463,
-      "precision": 0.4351145038167939,
-      "recall": 0.15489130434782608,
-      "f1_score": 0.22845691382765532
+      "auc": 0.5709283677833215,
+      "precision": 0.5034965034965035,
+      "recall": 0.1956521739130435,
+      "f1_score": 0.28180039138943247
     },
     "CatBoost": {
-      "auc": 0.5303746436208125,
-      "precision": 0.3972602739726027,
-      "recall": 0.07880434782608696,
-      "f1_score": 0.13151927437641722
+      "auc": 0.5431842480399145,
+      "precision": 0.5480769230769231,
+      "recall": 0.15489130434782608,
+      "f1_score": 0.24152542372881355
     }
   },
-  "best_model": "CatBoost",
+  "best_model": "LightGBM",
   "backtest_results": {
     "买入持有": {
       "total_return": -21.624903997199986,
@@ -59,44 +59,44 @@
       "win_rate": 0.0
     },
     "GradientBoosting": {
-      "total_return": -46.11168191429999,
-      "final_value": 53888.318085700004,
-      "sharpe_ratio": -1.3806358695380359,
-      "max_drawdown": 48.76388481663859,
-      "total_trades": 13,
-      "winning_trades": 0,
-      "losing_trades": 12,
-      "win_rate": 0.0
+      "total_return": -19.984916405500012,
+      "final_value": 80015.08359449999,
+      "sharpe_ratio": -0.3959855272431101,
+      "max_drawdown": 35.968138239360066,
+      "total_trades": 18,
+      "winning_trades": 4,
+      "losing_trades": 13,
+      "win_rate": 22.22222222222222
     },
     "XGBoost": {
-      "total_return": -45.41231003709997,
-      "final_value": 54587.68996290003,
-      "sharpe_ratio": -2.187843684108151,
-      "max_drawdown": 48.53118623736874,
-      "total_trades": 21,
-      "winning_trades": 3,
-      "losing_trades": 17,
-      "win_rate": 14.285714285714285
+      "total_return": -25.805021562999986,
+      "final_value": 74194.97843700001,
+      "sharpe_ratio": -0.45478272224590177,
+      "max_drawdown": 40.1785357288497,
+      "total_trades": 18,
+      "winning_trades": 4,
+      "losing_trades": 13,
+      "win_rate": 22.22222222222222
     },
     "LightGBM": {
-      "total_return": -42.88641958529997,
-      "final_value": 57113.58041470003,
-      "sharpe_ratio": -3.182757400209301,
-      "max_drawdown": 44.86252465287127,
+      "total_return": -25.654238252599924,
+      "final_value": 74345.76174740007,
+      "sharpe_ratio": -0.8465442231425371,
+      "max_drawdown": 39.6465351633355,
       "total_trades": 17,
-      "winning_trades": 2,
-      "losing_trades": 14,
-      "win_rate": 11.76470588235294
+      "winning_trades": 3,
+      "losing_trades": 13,
+      "win_rate": 17.647058823529413
     },
     "CatBoost": {
-      "total_return": -26.478738955199947,
-      "final_value": 73521.26104480005,
-      "sharpe_ratio": -3.27285220194072,
-      "max_drawdown": 26.47873895519995,
-      "total_trades": 6,
-      "winning_trades": 0,
-      "losing_trades": 6,
-      "win_rate": 0.0
+      "total_return": -26.284316480399966,
+      "final_value": 73715.68351960003,
+      "sharpe_ratio": -0.5352782813139988,
+      "max_drawdown": 39.324148725210556,
+      "total_trades": 17,
+      "winning_trades": 4,
+      "losing_trades": 12,
+      "win_rate": 23.52941176470588
     }
   }
 }
